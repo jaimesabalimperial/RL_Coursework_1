@@ -1,4 +1,4 @@
-from coursework1 import MC_agent, DP_agent, TD_agent, get_CID, get_login
+from coursework1 import MC_agent, DP_agent, TD_agent
 from maze import Maze
 
 if __name__ == '__main__':

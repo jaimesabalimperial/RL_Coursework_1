@@ -25,12 +25,10 @@ class DP_agent(object):
         T = env.get_T() #transition matrix
         absorbing_states = env.get_absorbing()
         R = env.get_R() #rewards matrix
-        epoch = 0
 
         iterated_V = np.copy(V) #make copy of value map
         values_have_converged = False
         while not values_have_converged:
-            epoch += 1
             for curr_state in range(env.get_state_size()):
                 #check if state is absorbing --> continue if it is
                 if absorbing_states[0, curr_state] != 1:
@@ -63,7 +61,7 @@ class DP_agent(object):
             if delta < threshold: 
                 values_have_converged = True
                 
-        return V, epoch
+        return V
 
     def policy_iteration(self, env, threshold = 0.0001):
         """
@@ -87,20 +85,18 @@ class DP_agent(object):
         T = env.get_T() #transition matrix
         absorbing_states = env.get_absorbing()
         R = env.get_R() #rewards matrix
-        total_epochs = 0
         policy_stable = False # Condition to stop the main loop
 
         while not policy_stable:
             policy_stable = True
             
-            V, epochs = self.evaluate_policy(env, policy, threshold=threshold)
-            total_epochs += epochs
+            V = self.evaluate_policy(env, policy, threshold=threshold)
 
             for curr_state in range(env.get_state_size()):
                 
                 if absorbing_states[0, curr_state] != 1:
                     curr_state_policies = policy[curr_state] #retrieve probabilities of actions for current state
-                    prev_action = curr_state_policies.index(max(policy[curr_state])) #get index of action with max probability
+                    prev_action = np.where(curr_state_policies == max(policy[curr_state])) #get index of action with max probability
 
                     Q_new = [] #initialise state_action function for each action
                     #iterate over all actions and calculate new value function 
@@ -122,7 +118,7 @@ class DP_agent(object):
                 if prev_action != np.argmax(updated_policy):
                     policy_stable = False
 
-        return policy, V, total_epochs
+        return policy, V
 
     # [Action required]
     # WARNING: make sure this function can be called by the auto-marking script
@@ -135,7 +131,7 @@ class DP_agent(object):
         - V {np.array} -- Corresponding value function 
         """
         #use policy iteration to arrive to optimum policy in maze
-        policy, V, epochs = self.policy_iteration(env)
+        policy, V = self.policy_iteration(env)
 
         return policy, V
 

@@ -23,9 +23,12 @@ class Maze(object):
     """
     # [Action required]
     # Properties set from the CID
-    self._prob_success = 0.8 + 0.02*(9- get_CID()[-2]) # float
-    self._gamma = 0.8 + 0.02*get_CID()[-2] # float
-    self._goal = get_CID()[-1] % 4 # integer (0 for R0, 1 for R1, 2 for R2, 3 for R3)
+    cid = get_CID()
+    login = get_login()
+
+    self._prob_success = 0.8 + 0.02*(9 - int(cid[-2])) # float
+    self._gamma = 0.8 + 0.02*int(cid[-2]) # float
+    self._goal = int(cid[-1]) % 4 # integer (0 for R0, 1 for R1, 2 for R2, 3 for R3)
 
     # Build the maze
     self._build_maze()
