@@ -219,6 +219,7 @@ class Maze(object):
     self._state = self._get_state_from_loc(self._starting_locs[random.randrange(len(self._starting_locs))])
     self._reward = 0
     self._done = False
+    
     return self._t, self._state, self._reward, self._done
 
   def step(self, action):

@@ -9,20 +9,20 @@ if __name__ == '__main__':
     maze = Maze()
 
     ### Question 1: Dynamic programming
-    dp_agent = DP_agent()
-    dp_policy, dp_value = dp_agent.solve(maze)
+    #dp_agent = DP_agent()
+    #dp_policy, dp_value = dp_agent.solve(maze)
 
-    print("Results of the DP agent:\n")
-    maze.get_graphics().draw_policy(dp_policy)
-    maze.get_graphics().draw_value(dp_value)
+    #print("Results of the DP agent:\n")
+    #maze.get_graphics().draw_policy(dp_policy)
+    #maze.get_graphics().draw_value(dp_value)
 
     ### Question 2: Monte-Carlo learning
-    #mc_agent = MC_agent()
-    #mc_policy, mc_values, total_rewards = mc_agent.solve(maze)
+    mc_agent = MC_agent()
+    mc_policy, mc_values, total_rewards = mc_agent.solve(maze)
 
-    #print("Results of the MC agent:\n")
-    #maze.get_graphics().draw_policy(mc_policy)
-    #maze.get_graphics().draw_value(mc_values[-1])
+    print("Results of the MC agent:\n")
+    maze.get_graphics().draw_policy(mc_policy)
+    maze.get_graphics().draw_value(mc_values[-1])
 
     ### Question 3: Temporal-Difference learning
     #td_agent = TD_agent()
