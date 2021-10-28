@@ -163,10 +163,9 @@ class MC_agent(object):
             
             G = reward + self.environment.get_gamma()*G
             
-        returns = np.array(returns[::-1]) #need to reverse list to have in order of state visited       
+        returns = np.array(returns[::-1]) #need to reverse list to have in order of state visited  
 
-        # G = np.sum(reward*(self.environment.get_gamma()**i) for i, reward in enumerate(episode[first_state_occurence:,2]))
-        return returns
+        return returns     
 
     def episode(self):
         """"""
@@ -198,7 +197,7 @@ class MC_agent(object):
 
 
     def solve(self, env):
-        """
+         """
         Solve a given Maze environment using Monte Carlo learning
         input: env {Maze object} -- Maze to solve
         output: 
@@ -208,26 +207,26 @@ class MC_agent(object):
         """
 
         # Initialisation (can be edited)
-        self.environment = env
-        V = np.zeros(env.get_state_size())
-        Q = np.random.rand(env.get_state_size(), env.get_action_size()) 
-        policy = np.zeros((env.get_state_size(), env.get_action_size())) 
-        policy += self.epsilon/env.get_action_size() #initialise actions to have same probability based on epsilon
+         self.environment = env
+         V = np.zeros(env.get_state_size())
+         Q = np.random.rand(env.get_state_size(), env.get_action_size()) 
+         policy = np.zeros((env.get_state_size(), env.get_action_size())) 
+         policy += self.epsilon/env.get_action_size() #initialise actions to have same probability based on epsilon
         
-        #initialise epsilon greedy policy from random Q values
-        for state in range(env.get_state_size()):
+         #initialise epsilon greedy policy from random Q values
+         for state in range(env.get_state_size()):
             best_action = np.argmax(Q[state])
             for action in range(env.get_action_size()):
                 if action == best_action:
                     policy[state, action] += 1 - self.epsilon 
 
-        values = [V]
-        total_rewards = []
+         values = [V]
+         total_rewards = []
 
-        occurences = np.zeros((env.get_state_size(), env.get_action_size()))
-        returns = np.zeros((env.get_state_size(), env.get_action_size()))
+         occurences = np.zeros((env.get_state_size(), env.get_action_size()))
+         returns = np.zeros((env.get_state_size(), env.get_action_size()))
 
-        for i in range(1,self.num_episodes+1):
+         for i in range(1,self.num_episodes+1):
             print(i)
             self.policy = policy
             episode = self.episode() #generate an episode 
@@ -255,7 +254,7 @@ class MC_agent(object):
                     else: 
                         policy[state, action] = (self.epsilon/env.get_action_size())
 
-        for state in range(env.get_state_size()):
+         for state in range(env.get_state_size()):
             #get value of each state (max Q(s,a))
             values[-1][state] = np.max(Q[state])
 
@@ -266,7 +265,7 @@ class MC_agent(object):
 
             total_rewards.append(state_reward)
             
-        return policy, values, total_rewards
+         return policy, values, total_rewards
 
 # This class define the Temporal-Difference agent
 class TD_agent(object):
