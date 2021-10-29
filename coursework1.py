@@ -137,7 +137,7 @@ class DP_agent(object):
 class MC_agent(object):
     def __init__(self):
         self.epsilon = 0.4
-        self.num_episodes = 1000
+        self.num_episodes = 10000
         self.environment = None
         self.policy = None
 
@@ -223,7 +223,8 @@ class MC_agent(object):
          values = [V]
          total_rewards = []
 
-         occurences = np.zeros((env.get_state_size(), env.get_action_size()))
+
+         total_occurences = np.zeros((env.get_state_size(), env.get_action_size()))
          returns = np.zeros((env.get_state_size(), env.get_action_size()))
 
          for i in range(1,self.num_episodes+1):
@@ -233,17 +234,20 @@ class MC_agent(object):
 
             #get state-action returns from episode
             every_visit_returns = self.calculate_returns(episode)
+            unique_state_action_pairs = set([(state,action) for state, action in every_visit_returns[:,:2]])
 
-            for (state, action, G) in every_visit_returns:
-                state, action = list(map(int, [state,action]))
+            #iterate over all unique state action pairs in episode
+            for (state, action) in unique_state_action_pairs:
+                state, action = list(map(int, [state,action])) #make integers for indexing
+                first_occurence = [i for i,(s,a) in enumerate(episode[:,:2]) if s == state and a == action][0] 
+                G = every_visit_returns[first_occurence][2]
 
-                #check if we have already seen the state-action pair in the episode (First-Visit MC)
-                if occurences[state, action] == 0:
-                    occurences[state, action] += 1
-                    returns[state,action] = G #return of state-action pair that of first visit in episode
+                #add G to total returns for state action pair
+                returns[state,action] += G
+                total_occurences[state, action] += 1
 
-                    #input average return for state, action pair as its value in Q
-                    Q[state, action] = np.mean(returns[state, action])
+                #input average return for state, action pair as its value in Q
+                Q[state, action] = returns[state, action] / total_occurences[state, action]
 
                 best_action = np.argmax(Q[state, :]) #action is that with maximum state-action value
                 
