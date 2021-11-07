@@ -27,7 +27,7 @@ class Maze(object):
     login = get_login()
 
     self._prob_success = 0.8 + 0.02*(9 - int(cid[-2])) # float
-    self._gamma = 0.8 + 0.02*int(cid[-2]) # float
+    self._gamma = 0.8 + 0.02*int(cid[-2]) # float 
     self._goal = int(cid[-1]) % 4 # integer (0 for R0, 1 for R1, 2 for R2, 3 for R3)
 
     # Build the maze
