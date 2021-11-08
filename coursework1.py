@@ -1,5 +1,4 @@
 import numpy as np 
-from random import seed
 import random
 import matplotlib.pyplot as plt # Graphical library
 
